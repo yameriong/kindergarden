@@ -1,8 +1,13 @@
 package ac.bsedu.kindergarden.webservice.domain.posts;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import ac.bsedu.kindergarden.webservice.domain.posts.Posts;
+import ac.bsedu.kindergarden.webservice.domain.posts.PostsRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,7 @@ public class PostsRepositoryTest {
   @Test
   public void 게시글저장_불러오기() {
     //given
+    LocalDateTime now = LocalDateTime.now();
     postsRepository.save(Posts.builder()
         .title("테스트 게시글")
         .content("테스트 본문")
@@ -39,8 +45,8 @@ public class PostsRepositoryTest {
 
     //then
     Posts posts = postsList.get(0);
-    assertThat(posts.getTitle(),  is("테스트 게시글"));
-    assertThat(posts.getContent(), is("테스트 본문"));
+    Assert.assertTrue(posts.getCreatedDate().isAfter(now));
+    Assert.assertTrue(posts.getModifiedDate().isAfter(now));
   }
 
 
